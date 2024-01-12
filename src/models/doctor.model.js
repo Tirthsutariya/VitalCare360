@@ -2,16 +2,8 @@ import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const patientSchema = new Schema(
+const doctorSchema = new Schema(
   {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-      index: true,
-    },
     fullName: {
       type: String,
       required: true,
@@ -35,57 +27,59 @@ const patientSchema = new Schema(
       required: true,
       enum: ["Male", "Female", "Other"],
     },
-    DOB: {
-      type: Date,
-    },
-    bloodGroup: {
-      type: String,
-      enum: ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"],
-    },
-    height: {
-      type: Number,
-    },
-    weight: {
-      type: Number,
-    },
     avatar: {
-      type: String, // cloudinary url
+      type: String, // cloudinary url or file storage reference
       required: true,
     },
     password: {
       type: String,
       required: [true, "Password is required"],
     },
-    allergis: [
+    personalInfo: {
+      type: String,
+    },
+    speciality: [
       {
         type: String,
-        lowercase: true,
+        required: true,
         trim: true,
       },
     ],
-    currentMedication: [
+    eduQualification: [
       {
-        type: String, // cloudinary url
+        type: String,
+        required: true,
+        trim: true,
       },
     ],
-    pastMedication: [
-      {
-        type: String, // cloudinary url
-      },
-    ],
-    chronicDisease: [
+    clinicDetails: [
       {
         type: String,
       },
     ],
-    injuries: [
+    availability: [
       {
-        type: String,
-      },
-    ],
-    surgeries: [
-      {
-        type: String,
+        day: {
+          type: String,
+          enum: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
+          required: true,
+        },
+        startTime: {
+          type: String,
+          required: true,
+        },
+        endTime: {
+          type: String,
+          required: true,
+        },
       },
     ],
   },
@@ -94,18 +88,18 @@ const patientSchema = new Schema(
   }
 );
 
-patientSchema.pre("save", async function (next) {
+doctorSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-patientSchema.methods.isPasswordCorrect = async function (password) {
+doctorSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-patientSchema.methods.generateAccessToken = function () {
+doctorSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -120,7 +114,7 @@ patientSchema.methods.generateAccessToken = function () {
   );
 };
 
-patientSchema.methods.generateRefreshToken = function () {
+doctorSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -132,4 +126,4 @@ patientSchema.methods.generateRefreshToken = function () {
   );
 };
 
-export const Patient = mongoose.model("Pateint", patientSchema);
+export const Doctor = mongoose.model("Doctor", doctorSchema);
