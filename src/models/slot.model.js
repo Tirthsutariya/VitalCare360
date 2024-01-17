@@ -14,6 +14,7 @@ const slotSchema = new Schema(
     },
     status: {
       type: String,
+      default: "Available",
       enum: ["Available", "Booked", "Unavailable"],
       required: true,
     },
@@ -30,7 +31,7 @@ const slotSchema = new Schema(
       ],
       required: true,
     },
-    doctorID: {
+    doctorRef: {
       type: Schema.Types.ObjectId,
       ref: "Doctor",
       required: true,

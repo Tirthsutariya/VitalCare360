@@ -4,17 +4,17 @@ import bcrypt from "bcrypt";
 
 const appointmentSchema = new Schema(
   {
-    patient: {
+    patientRef: {
       type: Schema.Types.ObjectId,
       ref: "Patient",
       required: true
     },
-    doctor: {
+    doctorRef: {
         type: Schema.Types.ObjectId,
         ref: "Doctor",
         required: true
     },
-    slot: {
+    slotRef: {
         type: Schema.Types.ObjectId,
         ref: "Slot",
         required: true
