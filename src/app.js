@@ -23,4 +23,10 @@ app.use(express.static("public"))
 // server mathi user na browser ni cookie ne access and set kari shakay
 app.use(cookieParser())
 
+//routes import
+import userRouter from './routes/user.route.js'
+
+//routes declaration
+app.use("/api/v1/users", userRouter)
+
 export { app }

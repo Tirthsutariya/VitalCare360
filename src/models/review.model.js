@@ -4,27 +4,26 @@ import bcrypt from "bcrypt";
 
 const reviewSchema = new Schema(
     {
-      doctor: {
+      patientRef: {
         type: Schema.Types.ObjectId,
-        ref: "Doctor",
+        ref: 'Patient',
         required: true,
       },
-      patient: {
+      doctorRef: {
         type: Schema.Types.ObjectId,
-        ref: "Patient",
+        ref: 'Doctor',
         required: true,
       },
-      rating: {
-
+      Rating: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5,
       },
-      reviewText: {
-        type : String,
-        required: true
+      ReviewText: {
+        type: String,
+        trim: true,
       },
-      date: {
-        type : Date,
-        required : true
-      }
     },
     {
       timestamps: true,

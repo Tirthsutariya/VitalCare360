@@ -6,25 +6,28 @@ const appointmentSchema = new Schema(
   {
     patient: {
       type: Schema.Types.ObjectId,
-      ref: "Patient"
+      ref: "Patient",
+      required: true
     },
     doctor: {
         type: Schema.Types.ObjectId,
-        ref: "Doctor"
+        ref: "Doctor",
+        required: true
     },
     slot: {
         type: Schema.Types.ObjectId,
-        ref: "Slot"
+        ref: "Slot",
+        required: true
     },
     date: {
         type: Date,
         required: true
     },
-    status: {
-        type: String,
-        enum: ["pending","confirmed","canceled"],
-        required: true
-    }
+    appointmentStatus: {
+      type: String,
+      enum: ["pending", "confirmed", "canceled"],
+      required: true,
+    },
   },
   {
     timestamps: true,
